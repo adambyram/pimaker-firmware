@@ -1,5 +1,6 @@
-#Marlin firmware for Solidoodle 2/3
-Previous official Solidoodle firmware was based on early version of Marlin and could not be altered to accomodate a Panelolu LCD screen and encoder without many errors. This version has configuration.h and configuration_adv.h altered to reflect all changes found in official Solidoodle firmware.
+#Marlin firmware for PiMaker
+This is the Marlin_v1 branch of the Solidoodle 2/3 firmware from https://github.com/mlaws/solidoodle2 modified with the configurion needed to drive a PiMaker 3D Printer (http://www.thingiverse.com/thing:128700) running on a Printrboard Rev D.  Please note - a polar conversion program (listed at the Thingiverse link) needs to be run against your gcode *before* sending it to this firmware.
+
 
 ##Step 1
 

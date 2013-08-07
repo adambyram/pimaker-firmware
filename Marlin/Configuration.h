@@ -1,3 +1,5 @@
+// MODIFIED TO SUPPORT PIMAKER and PIMAKER PROTOTYPE
+
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
@@ -9,7 +11,7 @@
 //Implementation of an idea by Prof Braino to inform user that any changes made
 //to this build by the user have been successfully uploaded into firmware.
 #define STRING_VERSION_CONFIG_H __DATE__ " " __TIME__ // build date and time
-#define STRING_CONFIG_H_AUTHOR "Lawsy/Rincewind/Tealvince/Adrian" //Who made the changes.
+#define STRING_CONFIG_H_AUTHOR "wjsteele" //Who made the changes.
 
 // change to 3 for SD3 //{SD Patch}
 #define SOLIDOODLE_VERSION 2 //{SD Patch}
@@ -51,7 +53,7 @@
 // 301 = Rambo
 
 #ifndef MOTHERBOARD
-#define MOTHERBOARD 62 //{SD Patch}
+#define MOTHERBOARD 81 //{SD Patch}
 #endif
 
 //// The following define selects which power supply you have. Please choose the one that matches your setup
@@ -88,10 +90,10 @@
 // 55 is 100k thermistor - ATC Semitec 104GT-2 (Used in ParCan) (1k pullup)
 // 80 is QU-BD thermistor as found in QU-BD silicone bed
 
-#define TEMP_SENSOR_0 6 //{SD Patch}
+#define TEMP_SENSOR_0 1 //{SD Patch}
 #define TEMP_SENSOR_1 0
 #define TEMP_SENSOR_2 0
-#define TEMP_SENSOR_BED 6 //{SD Patch}
+#define TEMP_SENSOR_BED 0 //{SD Patch}
 
 // Actual temperature must be close to target for this long before M109 returns success
 #define TEMP_RESIDENCY_TIME 5	// (seconds) //{SD Patch}
@@ -109,7 +111,7 @@
 // When temperature exceeds max temp, your heater will be switched off.
 // This feature exists to protect your hotend from overheating accidentally, but *NOT* from thermistor short/failure!
 // You should use MINTEMP for thermistor short/failure protection.
-#define HEATER_0_MAXTEMP 225 //{SD Patch}
+#define HEATER_0_MAXTEMP 275 //{SD Patch}
 #define HEATER_1_MAXTEMP 275
 #define HEATER_2_MAXTEMP 275
 #define BED_MAXTEMP 110 //{SD Patch}
@@ -210,7 +212,7 @@
 //if PREVENT_DANGEROUS_EXTRUDE is on, you can still disable (uncomment) very long bits of extrusion separately.
 #define PREVENT_LENGTHY_EXTRUDE
 
-#define EXTRUDE_MINTEMP 150 //{SD Patch}
+#define EXTRUDE_MINTEMP 160 //{SD Patch}
 #define EXTRUDE_MAXLENGTH (X_MAX_LENGTH+Y_MAX_LENGTH) //prevent extrusion of very large distances.
 
 //===========================================================================
@@ -244,7 +246,7 @@
 
 // The pullups are needed if you directly connect a mechanical endswitch between the signal and ground pins.
 const bool X_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert the logic of the endstops.
-const bool Y_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert the logic of the endstops.
+const bool Y_ENDSTOPS_INVERTING = true; //{SD Patch} // set to true to invert the logic of the endstops.
 const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert the logic of the endstops.
 //#define DISABLE_MAX_ENDSTOPS
 
@@ -255,61 +257,43 @@ const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert t
 #define E_ENABLE_ON 0 // For all extruders
 
 // Disables axis when it's not being used.
-#define DISABLE_X false
+#define DISABLE_X true
 #define DISABLE_Y false
-#define DISABLE_Z false
+#define DISABLE_Z true
 #define DISABLE_E false // For all extruders
 
 #define INVERT_X_DIR false    //{SD Patch} // for Mendel set to false, for Orca set to true
 #define INVERT_Y_DIR false    // for Mendel set to true, for Orca set to false
-#define INVERT_Z_DIR false    //{SD Patch} // for Mendel set to false, for Orca set to true
-#define INVERT_E0_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
+#define INVERT_Z_DIR true    //{SD Patch} // for Mendel set to false, for Orca set to true
+#define INVERT_E0_DIR true   // for direct drive extruder v9 set to true, for geared extruder set to false
 #define INVERT_E1_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
 #define INVERT_E2_DIR false   // for direct drive extruder v9 set to true, for geared extruder set to false
 
 // ENDSTOP SETTINGS:
 // Sets direction of endstops when homing; 1=MAX, -1=MIN
-#define X_HOME_DIR 1 //{SD Patch}
+#define X_HOME_DIR -1 //{SD Patch}
 #define Y_HOME_DIR 1 //{SD Patch}
-#define Z_HOME_DIR -1
+#define Z_HOME_DIR 1
 
 #define min_software_endstops false //{SD Patch} //If true, axis won't move to coordinates less than HOME_POS.
 #define max_software_endstops false //{SD Patch} //If true, axis won't move to coordinates greater than the defined lengths below.
+
 // Travel limits after homing
-// {SD Patch} Start
-// ###############################
-#if SOLIDOODLE_VERSION == 3
-  #define X_MAX_POS 209
-  #define X_MIN_POS 0
-  #define Y_MAX_POS 200
-  #define Y_MIN_POS 0
-  #define Z_MAX_POS 200
-  #define Z_MIN_POS 0
+#define X_MAX_POS 125  // set this to max travel beyond zero
+#define X_MIN_POS -10.5 // set this to max travel below zero to limit switch engagement
+#define Y_MAX_POS 360  // always set to 360
+#define Y_MIN_POS 0  // always set to 0
+#define Z_MAX_POS 200  // set to max height away from build platform (depends on z limit switch)
+#define Z_MIN_POS 0  // always set to 0
 
 // The position of the homing switches
-  #define MANUAL_HOME_POSITIONS  // If defined, MANUAL_*_HOME_POS below will be used
-  //#define BED_CENTER_AT_0_0  // If defined, the center of the bed is at (X=0, Y=0)
-//Manual homing switch locations:
-  #define MANUAL_X_HOME_POS 209
-  #define MANUAL_Y_HOME_POS 200
-  #define MANUAL_Z_HOME_POS 0
+#define MANUAL_HOME_POSITIONS  // If defined, MANUAL_*_HOME_POS below will be used
+#define BED_CENTER_AT_0_0  // If defined, the center of the bed is at (X=0, Y=0)
 
-#else //assume SD2
-  #define X_MAX_POS 159
-  #define X_MIN_POS 0
-  #define Y_MAX_POS 150
-  #define Y_MIN_POS 0
-  #define Z_MAX_POS 150
-  #define Z_MIN_POS 0
-
-// The position of the homing switches
-  #define MANUAL_HOME_POSITIONS  // If defined, MANUAL_*_HOME_POS below will be used
-  //#define BED_CENTER_AT_0_0  // If defined, the center of the bed is at (X=0, Y=0)
 //Manual homing switch locations:
-  #define MANUAL_X_HOME_POS 159
-  #define MANUAL_Y_HOME_POS 150
-  #define MANUAL_Z_HOME_POS 0
-#endif
+#define MANUAL_X_HOME_POS -10.5  // this should match X_MIN_POS... tune to actual position of switch engagement
+#define MANUAL_Y_HOME_POS 0 // leave this at zero
+#define MANUAL_Z_HOME_POS 96  // normally much higher... but Prototype has z limit in different position - adjust it to max travel above build plate for switch engagement
 
 #define X_MAX_LENGTH (X_MAX_POS - X_MIN_POS)
 #define Y_MAX_LENGTH (Y_MAX_POS - Y_MIN_POS)
@@ -319,16 +303,16 @@ const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert t
 
 //// MOVEMENT SETTINGS
 #define NUM_AXIS 4 // The axis order in all axis related arrays is X, Y, Z, E
-#define HOMING_FEEDRATE {50*60, 50*60, 4*60, 0}  // set the homing speeds (mm/min)
+#define HOMING_FEEDRATE {1500, 250, 150, 0}  // set the homing speeds (mm/min)
 
 // default settings 
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {88,88,2268,115}  //{SD Patch} // default steps per unit for ultimaker
-#define DEFAULT_MAX_FEEDRATE          {500, 500, 5, 45}    //{SD Patch} // (mm/sec)
-#define DEFAULT_MAX_ACCELERATION      {9000,9000,100,10000}    // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {43.75,15.20,1133.86,46.68152} //{43.75,39.96,1133.86,46.68152}    //{SD Patch} // default steps per unit for pimaker (Y=15.20 is for prototype only)
+#define DEFAULT_MAX_FEEDRATE          {50, 200, 500, 300}  //{SD Patch} // (mm/sec)
+#define DEFAULT_MAX_ACCELERATION      {100,500,100,3000}  // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
-#define DEFAULT_ACCELERATION          3000    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
-#define DEFAULT_RETRACT_ACCELERATION  3000   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
+#define DEFAULT_ACCELERATION          1000 // 150    // X, Y, Z and E max acceleration in mm/s^2 for printing moves 
+#define DEFAULT_RETRACT_ACCELERATION  3000 // 150   // X, Y, Z and E max acceleration in mm/s^2 for r retracts
 
 // Offset of the extruders (uncomment if using more than one and relying on firmware to position when changing).
 // The offset has to be X=0, Y=0 for the extruder 0 hotend (default extruder).
@@ -337,7 +321,7 @@ const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert t
 // #define EXTRUDER_OFFSET_Y {0.0, 5.00}  // (in mm) for each extruder, offset of the hotend on the Y axis
 
 // The speed change that does not require acceleration (i.e. the software might assume it can be done instanteneously)
-#define DEFAULT_XYJERK                20.0    // (mm/sec)
+#define DEFAULT_XYJERK                10.0    // (mm/sec)
 #define DEFAULT_ZJERK                 0.4     // (mm/sec)
 #define DEFAULT_EJERK                 5.0    // (mm/sec)
 
@@ -356,40 +340,9 @@ const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert t
 // please keep turned on if you can.
 #define EEPROM_CHITCHAT //{SD Patch}
 
-//LCD and SD support
-//#define ULTRA_LCD  //general lcd support, also 16x2
-//#define DOGLCD	// Support for SPI LCD 128x64 (Controller ST7565R graphic Display Family)
 //#define SDSUPPORT // Enable SD Card Support in Hardware Console
 //#define SDSLOW // Use slower SD transfer mode (not normally needed - uncomment if you're getting volume init error)
 
-//#define ULTIMAKERCONTROLLER //as available from the ultimaker online store.
-//#define ULTIPANEL  //the ultipanel as on thingiverse
-
-// The RepRapDiscount Smart Controller (white PCB)
-// http://reprap.org/wiki/RepRapDiscount_Smart_Controller
-//#define REPRAP_DISCOUNT_SMART_CONTROLLER
-
-// The GADGETS3D G3D LCD/SD Controller (blue PCB)
-// http://reprap.org/wiki/RAMPS_1.3/1.4_GADGETS3D_Shield_with_Panel
-//#define G3D_PANEL
-
-// The RepRapDiscount FULL GRAPHIC Smart Controller (quadratic white PCB)
-// http://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
-//
-// ==> REMEMBER TO INSTALL U8glib to your ARDUINO library folder: http://code.google.com/p/u8glib/wiki/u8glib
-//#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER
-
-//automatic expansion
-#if defined (REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER)
- #define DOGLCD
- #define U8GLIB_ST7920
- #define REPRAP_DISCOUNT_SMART_CONTROLLER
-#endif
-
-#if defined(ULTIMAKERCONTROLLER) || defined(REPRAP_DISCOUNT_SMART_CONTROLLER) || defined(G3D_PANEL)
- #define ULTIPANEL
- #define NEWPANEL
-#endif 
 
 // Preheat Constants
 #define PLA_PREHEAT_HOTEND_TEMP 160 //{SD Patch}
@@ -399,30 +352,6 @@ const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert t
 #define ABS_PREHEAT_HOTEND_TEMP 190 //{SD Patch}
 #define ABS_PREHEAT_HPB_TEMP 90 //{SD Patch}
 #define ABS_PREHEAT_FAN_SPEED 255		// Insert Value between 0 and 255
-
-
-#ifdef ULTIPANEL
-  #define NEWPANEL  //enable this if you have a click-encoder panel
-  #define SDSUPPORT
-  #define ULTRA_LCD
-	#ifdef DOGLCD	// Change number of lines to match the DOG graphic display
-		#define LCD_WIDTH 20
-		#define LCD_HEIGHT 5
-	#else
-		#define LCD_WIDTH 20
-		#define LCD_HEIGHT 4
-	#endif
-#else //no panel but just lcd 
-  #ifdef ULTRA_LCD
-	#ifdef DOGLCD	// Change number of lines to match the 128x64 graphics display
-		#define LCD_WIDTH 20
-		#define LCD_HEIGHT 5
-	#else
-		#define LCD_WIDTH 16
-		#define LCD_HEIGHT 2
-	#endif    
-  #endif
-#endif
 
 // Increase the FAN pwm frequency. Removes the PWM noise but increases heating in the FET/Arduino
 //#define FAST_PWM_FAN
@@ -438,3 +367,4 @@ const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert t
 #include "thermistortables.h"
 
 #endif //__CONFIGURATION_H
+
