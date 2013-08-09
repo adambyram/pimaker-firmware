@@ -307,7 +307,7 @@ const bool Z_ENDSTOPS_INVERTING = false; //{SD Patch} // set to true to invert t
 
 // default settings 
 
-#define DEFAULT_AXIS_STEPS_PER_UNIT   {43.75,39.96,1133.86,46.68152} //{43.75,39.96,1133.86,46.68152}    //{SD Patch} // default steps per unit for pimaker (Y=15.20 is for prototype only)
+#define DEFAULT_AXIS_STEPS_PER_UNIT   {43.75,77.6,1133.86,46.68152} //{43.75,39.96,1133.86,46.68152}    //{SD Patch} // default steps per unit for pimaker (Y=15.20 is for prototype only)
 #define DEFAULT_MAX_FEEDRATE          {50, 200, 500, 300}  //{SD Patch} // (mm/sec)
 #define DEFAULT_MAX_ACCELERATION      {100,500,100,3000}  // X, Y, Z, E maximum start speed for accelerated moves. E default values are good for skeinforge 40+, for older versions raise them a lot.
 
